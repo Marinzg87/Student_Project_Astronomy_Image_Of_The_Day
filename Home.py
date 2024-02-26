@@ -7,21 +7,21 @@ url = "https://api.nasa.gov/planetary/apod?" \
       f"api_key={api_key}&" \
       "date=2024-02-25"
 
-# Make a request
-request = requests.get(url)
+# Make a response, get the data
+response1 = requests.get(url)
+data = response1.json()
 
-# Get a dictionary with the data
-content = request.json()
+# Get the title, image url, and explanation
+title = data["title"]
+image_url = data["url"]
+explanation = data["explanation"]
 
-# Get an image url and download it
-image_url = content["url"]
-response = requests.get(image_url)
-with open("image.jpg", "wb") as file:
-    file.write(response.content)
+# Download the image
+image_filepath = "image.png"
+response2 = requests.get(image_url)
+with open(image_filepath, "wb") as file:
+    file.write(response2.content)
 
-# Get the description
-description = content["explanation"]
-
-st.title("App to show the astronomy image of the day")
-st.image("image.jpg")
-st.write(description)
+st.title(title)
+st.image(image_filepath)
+st.write(explanation)
